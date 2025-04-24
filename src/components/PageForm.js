@@ -4,52 +4,61 @@ import { v4 as uuidv4 } from 'uuid';
 import './PageForm.css';
 
 const PageForm = ({ onAddPage }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [price, setPrice] = useState('');
-  const [imageUrl, setImageUrl] = useState(''); // Imagen principal
-  const [thumbnailUrls, setThumbnailUrls] = useState([]); // Imágenes pequeñas
-  const [additionalThumbnail, setAdditionalThumbnail] = useState(''); // Nueva imagen pequeña adicional
-  const navigate = useNavigate();
+  {/* Estados para almacenar los valores del formulario */}
+  const [title, setTitle] = useState('');            {/* Título de la página */}
+  const [content, setContent] = useState('');         {/* Contenido principal */}
+  const [price, setPrice] = useState('');             {/* Precio */}
+  const [imageUrl, setImageUrl] = useState('');       {/* Imagen principal */}
+  const [thumbnailUrls, setThumbnailUrls] = useState([]); {/* Imágenes pequeñas */}
+  const [additionalThumbnail, setAdditionalThumbnail] = useState(''); {/* Imagen pequeña adicional */}
 
+  const navigate = useNavigate(); {/* Hook para navegación */}
+
+  {/* Maneja el envío del formulario */}
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    {/* Validación básica */}
     if (!title.trim() || !content.trim() || !imageUrl.trim() || thumbnailUrls.length === 0) {
       alert('Por favor, completa todos los campos');
       return;
     }
 
+    {/* Crea un nuevo objeto de página */}
     const newPage = {
-      id: uuidv4(),
+      id: uuidv4(),                         /* ID único */
       title: title.trim(),
       content: content.trim(),
-      price: parseFloat(price.trim()), 
-      imageUrl: imageUrl.trim(), 
-      thumbnails: thumbnailUrls, // Guardamos las miniaturas
-      additionalThumbnail: additionalThumbnail.trim(), // Guardamos la nueva imagen pequeña adicional
-      createdAt: new Date().toISOString()
+      price: parseFloat(price.trim()),      /* Conversión a número */
+      imageUrl: imageUrl.trim(),
+      thumbnails: thumbnailUrls,            /* Array de miniaturas */
+      additionalThumbnail: additionalThumbnail.trim(), /* Imagen adicional */
+      createdAt: new Date().toISOString()   /* Fecha de creación */
     };
 
-    onAddPage(newPage);
-    navigate(`/page/${newPage.id}`);
+    onAddPage(newPage); {/* Llama a la función para agregar la página */}
+    navigate(`/page/${newPage.id}`); {/* Redirecciona a la nueva página */}
   };
 
+  {/* Maneja la carga de múltiples imágenes pequeñas */}
   const handleThumbnailChange = (e) => {
     const files = e.target.files;
     const urls = Array.from(files).map(file => URL.createObjectURL(file));
-    setThumbnailUrls(urls); // Convertimos las imágenes a URL y las guardamos en el estado
+    setThumbnailUrls(urls); {/* Convierte las imágenes a URLs locales */}
   };
 
+  {/* Maneja la carga de una imagen pequeña adicional */}
   const handleAdditionalThumbnailChange = (e) => {
     const file = e.target.files[0];
-    setAdditionalThumbnail(URL.createObjectURL(file)); // Guardamos la nueva imagen pequeña adicional
+    setAdditionalThumbnail(URL.createObjectURL(file)); {/* Convierte y guarda la imagen */}
   };
 
   return (
     <div className="page-form-container">
       <h2>Crear Nueva Página</h2>
       <form onSubmit={handleSubmit} className="page-form">
+
+        {/* Campo para el título */}
         <div className="form-group">
           <label htmlFor="title">Título:</label>
           <input
@@ -62,6 +71,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
+        {/* Campo para el contenido */}
         <div className="form-group">
           <label htmlFor="content">Contenido:</label>
           <textarea
@@ -74,6 +84,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
+        {/* Campo para la imagen principal */}
         <div className="form-group">
           <label htmlFor="imageUrl">Imagen Principal:</label>
           <input
@@ -84,6 +95,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
+        {/* Campo para múltiples miniaturas */}
         <div className="form-group">
           <label htmlFor="thumbnails">Imagen:</label>
           <input
@@ -96,7 +108,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
-        {/* Nueva sección para imagen pequeña adicional */}
+        {/* Campo para una imagen pequeña adicional */}
         <div className="form-group">
           <label htmlFor="additionalThumbnail">Imagen:</label>
           <input
@@ -107,6 +119,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
+        {/* Campo para el precio */}
         <div className="form-group">
           <label htmlFor="price">Precio:</label>
           <input
@@ -118,6 +131,7 @@ const PageForm = ({ onAddPage }) => {
           />
         </div>
 
+        {/* Botones de acción */}
         <div className="form-actions">
           <button type="button" onClick={() => navigate('/')} className="cancel-button">
             Cancelar
@@ -130,5 +144,4 @@ const PageForm = ({ onAddPage }) => {
     </div>
   );
 };
-
 export default PageForm;

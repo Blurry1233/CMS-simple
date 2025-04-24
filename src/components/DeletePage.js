@@ -2,13 +2,14 @@
 import React from 'react';
 
 const DeletePage = ({ pageId, onDeletePage }) => {
+  {/* Esta función se ejecuta cuando se hace clic en el botón */}
   const handleDelete = () => {
-    onDeletePage(pageId); // Llamamos la función para eliminar la página
+    onDeletePage(pageId); {/* Llama a la función que elimina la página, pasando el ID */}
   };
 
   return (
     <button onClick={handleDelete} className="delete-button">
-      Eliminar
+      Eliminar {/* Texto del botón */}
     </button>
   );
 };
